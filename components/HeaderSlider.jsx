@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+"use client"
 import { assets } from "@/assets/assets";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const HeaderSlider = () => {
   const sliderData = [
