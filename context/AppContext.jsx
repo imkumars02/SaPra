@@ -20,14 +20,22 @@ export const AppContextProvider = (props) => {
 
     const [products, setProducts] = useState([])
     const [userData, setUserData] = useState(false)
-    const [isSeller, setIsSeller] = useState(true)
+    const [isSeller, setIsSeller] = useState(false)
     const [cartItems, setCartItems] = useState({})
 
     const fetchProductData = async () => {
         setProducts(productsDummyData)
     }
 
+    if (user && !isSeller) {
+        const email = user?.emailAddresses[0].emailAddress;
+        if (email.toLowerCase() === "sapramart@gmail.com") {
+            setIsSeller(true);
+        }
+    }
+    
     const fetchUserData = async () => {
+        
         setUserData(userDummyData)
     }
 

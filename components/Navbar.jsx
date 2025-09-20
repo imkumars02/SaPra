@@ -9,6 +9,7 @@ import { useClerk, UserButton } from "@clerk/nextjs";
 const Navbar = () => {
 
   const { isSeller, router, user } = useAppContext();
+  
   const { openSignIn } = useClerk();
 
   return (
