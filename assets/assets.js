@@ -98,6 +98,9 @@ export const assets = {
   checkmark
 };
 
+
+
+
 export const BagIcon = () => {
   return (
     <svg className="w-5 h-5 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -129,6 +132,14 @@ export const HomeIcon = () => (
     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" />
   </svg>
 );
+
+export const RupeeIcon = () => {
+  return (
+    <svg className="w-5 h-5 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 4h12M6 8h12M6 12h4.5a2.5 2.5 0 0 1 2.5 2.5c0 1.5-1.5 2.5-3.5 2.5H9l4.5 4.5" />
+    </svg>
+  )
+}
 
 export const productsDummyData = [
   {

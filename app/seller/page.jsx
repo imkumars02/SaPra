@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
+import { useAppContext } from "@/context/AppContext";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const AddProduct = () => {
 
@@ -12,8 +15,48 @@ const AddProduct = () => {
   const [price, setPrice] = useState('');
   const [offerPrice, setOfferPrice] = useState('');
 
+  const {getToken} = useAppContext() 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData()
+
+    formData.append('name', name);
+    formData.append('description',description);
+    formData.append('category',category);
+    formData.append('price',price);
+    formData.append('offerPrice', offerPrice);
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append('images', files[i])
+    }
+
+    try {
+      
+      const token = await getToken()
+
+      const {data} = await axios.post('/api/product/add', formData, {headers : {Authorization : `Bearer ${token}`}})
+
+
+      if (data.success) {
+        toast.success(data.message)
+        setFiles([])
+        setName('')
+        setCategory('Earphone')
+        setDescription('')
+        setPrice('')
+        setOfferPrice('')
+      }
+      else{
+        toast.error(data.message)
+      }
+
+    } catch (error) { 
+      toast.error(error.message)
+    }
+
 
   };
 
@@ -93,6 +136,8 @@ const AddProduct = () => {
               <option value="Laptop">Laptop</option>
               <option value="Camera">Camera</option>
               <option value="Accessories">Accessories</option>
+              <option value="Accessories">Shirt</option>
+              <option value="Accessories">T-Shirt</option>
             </select>
           </div>
           <div className="flex flex-col gap-1 w-32">
