@@ -6,22 +6,42 @@ import { useAppContext } from "@/context/AppContext";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const MyOrders = () => {
 
-    const { currency } = useAppContext();
+    const { currency, getToken, user } = useAppContext();
 
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const fetchOrders = async () => {
-        setOrders(orderDummyData)
-        setLoading(false);
+        // setOrders(orderDummyData)
+        // setLoading(false);
+
+        try {
+            const token = getToken()
+
+            const {data} = await axios.get('/api/Order/list', {headers : {Authorization : `Bearer ${token}`}})
+
+            if (data.success) {
+                setOrders(data.orders.reverse())
+                setLoading(false)
+            }
+            else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error('NO product Found')
+        }
     }
 
     useEffect(() => {
-        fetchOrders();
-    }, []);
+        if (user) {
+            fetchOrders();
+        }
+    }, [user]);
 
     return (
         <>

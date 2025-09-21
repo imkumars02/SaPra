@@ -56,41 +56,32 @@ export const syncUserDeletion = inngest.createFunction(
 
 // Inngest Function to create user's Order in database
 export const createUserOrder = inngest.createFunction(
-  {
-    id: "create-user-order",
-    batchEvents: {
-      maxSize: 5,
-      timeout: "5s",
+    {
+        id: "create-user-order",
+        batchEvents: {
+            maxSize: 5,
+            timeout: "5s",
+        },
     },
-  },
-  { event: "order/created" },
-  async ({ events }) => {
-    try {
-      // Validate event data
-      const orders = events.map((event) => {
-        const { userId, items, amount, address, date } = event.data;
-        if (!userId || !items || !amount || !address || !date) {
-          throw new Error("Invalid order data in event");
+    { event: "order/created" },
+    async ({ events }) => {
+        try {
+            await connectDB();
+
+            const orders = events.map((event) => ({
+                userId: event.data.userId,
+                items: event.data.items,
+                amount: event.data.amount,
+                address: event.data.address,
+                date: event.data.date,
+            }));
+
+            await Order.insertMany(orders);
+
+            return { success: true, processed: orders.length };
+        } catch (error) {
+            console.error("Error in createUserOrder:", error);
+            throw new Error(`Failed to create orders: ${error.message}`);
         }
-        return {
-          userId,
-          items,
-          amount,
-          address,
-          date,
-        };
-      });
-
-      // Connect to database
-      await connectDB();
-
-      // Insert orders
-      await Order.insertMany(orders);
-
-      return { success: true, processed: orders.length };
-    } catch (error) {
-      console.error("Error in createUserOrder:", error);
-      throw new Error(`Failed to create orders: ${error.message}`);
     }
-  }
 );
